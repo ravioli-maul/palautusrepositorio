@@ -1,0 +1,7 @@
+# Järjestys on merkitsevä - halutaan alihakemistojen *.tmp mukaan.
+/**/*.tmp
+
+/**/__pycache__
+/**/.pytest_cache
+/**/.coverage
+/**/htmlcov
