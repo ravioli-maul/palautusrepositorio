@@ -20,8 +20,10 @@ class ProjectReader:
         # Assign data to variables
         name = project_data.get('name', 'Nameless project')
         description = project_data.get('description', 'No description')
+        license = project_data.get('license', 'No license')
+        authors = project_data.get("authors", [])
         dependencies =  list(dependencies_dict.keys())
         dev_dependencies = list(dev_dependencies_dict.keys())
 
         # return the Project object
-        return Project(name, description, dependencies, dev_dependencies)
+        return Project(name, description, authors, license, dependencies, dev_dependencies)
