@@ -8,6 +8,8 @@ ${DELAY}  0 seconds
 ${HOME_URL}  http://${SERVER}
 ${LOGIN_URL}  http://${SERVER}/login
 ${REGISTER_URL}  http://${SERVER}/register
+${MAIN_PAGE_URL}  http://${SERVER}/ohtu
+
 
 *** Keywords ***
 Open And Configure Browser
@@ -41,6 +43,9 @@ Go To Starting Page
 Go To Register Page
     Go To  ${REGISTER_URL}
 
+Go To Main Page
+    Go To  ${MAIN_PAGE_URL}
+
 Set Username
     [Arguments]  ${username}
     Input Text  username  ${username}
@@ -52,3 +57,20 @@ Set Password
 Set Password_Confirmation
     [Arguments]  ${password_confirmation}
     Input Text  password_confirmation  ${password_confirmation}
+
+# Moved from login.robot
+Login Should Succeed
+    Main Page Should Be Open
+
+Login Should Fail With Message
+    [Arguments]  ${message}
+    Login Page Should Be Open
+    Page Should Contain  ${message}
+
+Submit Credentials
+    Click Button  Login
+ 
+Create User And Go To Login Page
+    Create User  kalle  kalle123
+    Go To Login Page
+    Login Page Should Be Open
