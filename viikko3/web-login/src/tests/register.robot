@@ -39,6 +39,11 @@ Login After Successful Registration
     Set Password_Confirmation  kalle123
     Submit Registration
     Go To Main Page
+    Click Button  Logout
+    Set Username  palle
+    Set Password  kalle123
+    Submit Credentials
+    Login Should Succeed
 
 Login After Failed Registration
     Set Username  ralle
