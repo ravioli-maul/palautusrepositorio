@@ -9,11 +9,12 @@ class TestKauppa(unittest.TestCase):
     def setUp(self):
     # Testien yhteinen alustus 
         self.pankki_mock = Mock()
-        self.viitegeneraattori_mock = Mock()
+        self.viitegeneraattori_mock = Mock(wraps=Viitegeneraattori())
         self.varasto_mock = Mock()
 
         # palautetaan aina arvo 42
-        self.viitegeneraattori_mock.uusi.return_value = 42
+        # Ei enää...
+        #self.viitegeneraattori_mock.uusi.return_value = 42
 
         # tehdään toteutus saldo-metodille
         def varasto_saldo(tuote_id):
@@ -96,3 +97,48 @@ class TestKauppa(unittest.TestCase):
         self.pankki_mock.tilisiirto.assert_called_with(
             "pekka", ANY, "12345", ANY, 5
         )
+
+    def test_aloita_asionti_nollaa_edellisen_ostoksen(self):
+        # tehdään ensimmäiset ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Resetoidaan pankki_mock
+        #self.pankki_mock.reset_mock()
+
+        # tehdään toiset ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("pekka", "12345")
+        
+        # Tarkastetaan että oikea hinta tilisiirrossa
+        self.pankki_mock.tilisiirto.assert_called_with(
+            "pekka", ANY, "12345", ANY, 4
+        )
+
+    def test_uusi_viitenumero_jokaiselle_maksutapahtumalle(self):
+        # tehdään ostokset ja maksetaan
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Tarkastetaan että viitegeneraattoria on kutsuttu kerran testin aikana
+        self.assertEqual(self.viitegeneraattori_mock.uusi.call_count, 1)
+
+        # tehdään toiset ostokset ja maksetaan
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Tarkastetaan että viitegeneraattoria on kutsuttu kahdesti testin aikana
+        self.assertEqual(self.viitegeneraattori_mock.uusi.call_count, 2)
+
+        # tehdään vielä kolmannnet ostokset ja maksetaan
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Tarkastetaan että viitegeneraattoria on kutsuttu kolmesti testin aikana
+        self.assertEqual(self.viitegeneraattori_mock.uusi.call_count, 3)
+
