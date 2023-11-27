@@ -19,11 +19,19 @@ class TestKauppa(unittest.TestCase):
         def varasto_saldo(tuote_id):
             if tuote_id == 1:
                 return 10
+            if tuote_id == 2:
+                return 50
+            if tuote_id == 3:
+                return 0
 
         # tehdään toteutus hae_tuote-metodille
         def varasto_hae_tuote(tuote_id):
             if tuote_id == 1:
                 return Tuote(1, "maito", 5)
+            if tuote_id == 2:
+                return Tuote(1, "leipä", 4)
+            if tuote_id == 3:
+                return Tuote(1, "voi", 8)
 
         # otetaan toteutukset käyttöön
         self.varasto_mock.saldo.side_effect = varasto_saldo
@@ -46,6 +54,42 @@ class TestKauppa(unittest.TestCase):
         # tehdään ostokset
         self.kauppa.aloita_asiointi()
         self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Testi argumenteilla
+        self.pankki_mock.tilisiirto.assert_called_with(
+            "pekka", ANY, "12345", ANY, 5
+        )
+
+    def test_ostetaan_kaksi_samaa_tuotetta_pankin_metodia_tilisiirto_kutsutaan_oikeilla_argumenteilla(self):
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Testi argumenteilla
+        self.pankki_mock.tilisiirto.assert_called_with(
+            "pekka", ANY, "12345", ANY, 10
+        )
+
+    def test_ostetaan_kaksi_eri_tuotetta_pankin_metodia_tilisiirto_kutsutaan_oikeilla_argumenteilla(self):
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu("pekka", "12345")
+
+        # Testi argumenteilla
+        self.pankki_mock.tilisiirto.assert_called_with(
+            "pekka", ANY, "12345", ANY, 5 + 4
+        )
+
+    def test_ostetaan_kaksi_eri_tuotetta_toinen_loppu_pankin_metodia_tilisiirto_kutsutaan_oikeilla_argumenteilla(self):
+        # tehdään ostokset
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(3)
         self.kauppa.tilimaksu("pekka", "12345")
 
         # Testi argumenteilla
