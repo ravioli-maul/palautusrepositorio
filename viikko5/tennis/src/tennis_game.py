@@ -18,38 +18,33 @@ class TennisGame:
         else:
             self.score_player2 = self.score_player2 + 1
 
+    def is_tied(self):
+        return self.score_player1 == self.score_player2
+
+    def is_endgame(self):
+        difference = abs(self.score_player1 - self.score_player2)
+        return max(self.score_player1, self.score_player2) >= 4 and difference >= 1
+
     def get_score(self):
-        score = ""
-        temp_score = 0
+        if self.is_tied():
+            return self.score_when_tied()
+        if self.is_endgame():
+            return self.score_when_endgame()
+        return self.score_in_play()
 
-        if self.score_player1 == self.score_player2:
-            if self.score_player1 == 0:
-                score = "Love-All"
-            elif self.score_player1 == 1:
-                score = "Fifteen-All"
-            elif self.score_player1 == 2:
-                score = "Thirty-All"
-            else:
-                score = "Deuce"
-        elif self.score_player1 >= 4 or self.score_player2 >= 4:
-            minus_result = self.score_player1 - self. score_player2
+    def score_in_play(self):
+        return self.SCORE_NAMES.get(self.score_player1, "") +\
+              "-" + self.SCORE_NAMES.get(self.score_player2, "")
 
-            if minus_result == 1:
-                score = f"Advantage {self.player1_name}"
-            elif minus_result == -1:
-                score = f"Advantage {self.player2_name}"
-            elif minus_result >= 2:
-                score = f"Win for {self.player1_name}"
-            else:
-                score = f"Win for {self.player2_name}"
-        else:
-            for i in range(1, 3):
-                if i == 1:
-                    temp_score = self.score_player1
-                else:
-                    score += "-"
-                    temp_score = self.score_player2
+    def score_when_tied(self):
+        return "Deuce" if self.score_player1 >= 3 else self.SCORE_NAMES[self.score_player1] + "-All"
 
-                score += self.SCORE_NAMES[temp_score]
-
-        return score
+    def score_when_endgame(self):
+        difference = self.score_player1 - self.score_player2
+        if difference == 1:
+            return "Advantage " + self.player1_name
+        if difference == -1:
+            return "Advantage " + self.player2_name
+        if difference >= 2:
+            return "Win for " + self.player1_name
+        return "Win for " + self.player2_name
