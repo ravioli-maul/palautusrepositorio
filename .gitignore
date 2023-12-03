@@ -5,5 +5,10 @@
 /**/.pytest_cache
 /**/.coverage
 /**/htmlcov
+<<<<<<< HEAD
 viikko4/tdd-ostoskori/
 viikko4/mock-demo/
+=======
+viikko4/mock-demo/
+viikko4/tdd-ostoskori/
+>>>>>>> 9a93550 (Add folders to .gitgnore)
