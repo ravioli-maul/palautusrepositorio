@@ -1,0 +1,8 @@
+.vscode
+.DS_Store
+.pytest_cache
+__pycache__
+tests
+poetry.lock
+*.py[cod]
+*$py.class
