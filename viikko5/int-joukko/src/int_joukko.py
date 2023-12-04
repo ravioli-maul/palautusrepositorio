@@ -5,7 +5,7 @@ OLETUSKASVATUS = 5
 class IntJoukko:
     def _luo_lista(self, koko):
         return [0] * koko
-    
+
     def __init__(self, kapasiteetti=KAPASITEETTI, kasvatuskoko=OLETUSKASVATUS):
         if not isinstance(kapasiteetti, int) or kapasiteetti < 0:
             raise Exception("Väärä kapasiteetti")
@@ -47,10 +47,6 @@ class IntJoukko:
             return True
         except ValueError:
             return False
-
-    def kopioi_lista(self, lahde, kohde):
-        for i in range(0, len(lahde)):
-            kohde[i] = lahde[i]
 
     def mahtavuus(self):
         return self.alkioiden_maara
@@ -104,11 +100,11 @@ class IntJoukko:
             return "{}"
         elif self.alkioiden_maara == 1:
             return "{" + str(self.lukujono[0]) + "}"
-        else:
-            esitys = "{"
-            for i in range(0, self.alkioiden_maara - 1):
-                esitys = esitys + str(self.lukujono[i])
-                esitys = esitys + ", "
-            esitys = esitys + str(self.lukujono[self.alkioiden_maara - 1])
-            esitys = esitys + "}"
-            return esitys
+
+        esitys = "{"
+        for i in range(0, self.alkioiden_maara - 1):
+            esitys = esitys + str(self.lukujono[i])
+            esitys = esitys + ", "
+        esitys = esitys + str(self.lukujono[self.alkioiden_maara - 1])
+        esitys = esitys + "}"
+        return esitys
