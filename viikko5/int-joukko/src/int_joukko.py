@@ -56,12 +56,7 @@ class IntJoukko:
         return self.alkioiden_maara
 
     def to_int_list(self):
-        lista = self._luo_lista(self.alkioiden_maara)
-
-        for i in range(0, len(lista)):
-            lista[i] = self.lukujono[i]
-
-        return lista
+        return self.lukujono[:self.alkioiden_maara]
 
     @staticmethod
     def yhdiste(joukko_a, joukko_b):
