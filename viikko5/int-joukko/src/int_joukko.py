@@ -54,7 +54,7 @@ class IntJoukko:
 
         for i in range(0, self.alkioiden_maara):
             if luku == self.lukujono[i]:
-                poistettava_indeksi = i  # siis luku löytyy tuosta kohdasta :D
+                poistettava_indeksi = i
                 self.lukujono[poistettava_indeksi] = 0
                 break
 
