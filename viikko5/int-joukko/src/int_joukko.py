@@ -83,17 +83,12 @@ class IntJoukko:
 
     @staticmethod
     def erotus(joukko_a, joukko_b):
-        joukko = IntJoukko()
-        lista_a = joukko_a.to_int_list()
-        lista_b = joukko_b.to_int_list()
-
-        for i in range(0, len(lista_a)):
-            joukko.lisaa(lista_a[i])
-
-        for i in range(0, len(lista_b)):
-            joukko.poista(lista_b[i])
-
-        return joukko
+        erotus_joukko = IntJoukko()
+        for luku in joukko_a.to_int_list():
+            erotus_joukko.lisaa(luku)
+        for luku in joukko_b.to_int_list():
+            erotus_joukko.poista(luku)
+        return erotus_joukko
 
     def __str__(self):
         if self.alkioiden_maara == 0:
