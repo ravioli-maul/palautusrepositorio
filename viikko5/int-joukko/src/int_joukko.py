@@ -40,25 +40,13 @@ class IntJoukko:
         return False
 
     def poista(self, luku):
-        poistettava_indeksi = -1
-        apumuuttuja = 0
-
-        for i in range(0, self.alkioiden_maara):
-            if luku == self.lukujono[i]:
-                poistettava_indeksi = i
-                self.lukujono[poistettava_indeksi] = 0
-                break
-
-        if poistettava_indeksi != -1:
-            for j in range(poistettava_indeksi, self.alkioiden_maara - 1):
-                apumuuttuja = self.lukujono[j]
-                self.lukujono[j] = self.lukujono[j + 1]
-                self.lukujono[j + 1] = apumuuttuja
-
-            self.alkioiden_maara = self.alkioiden_maara - 1
+        try:
+            indeksi = self.lukujono.index(luku, 0, self.alkioiden_maara)
+            self.lukujono.pop(indeksi)
+            self.alkioiden_maara -= 1
             return True
-
-        return False
+        except ValueError:
+            return False
 
     def kopioi_lista(self, lahde, kohde):
         for i in range(0, len(lahde)):
