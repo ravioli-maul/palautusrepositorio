@@ -22,8 +22,8 @@ class IntJoukko:
     def kuuluu(self, luku):
         osumat = 0
 
-        for indeksi in range(0, self.alkioiden_maara):
-            if luku == self.lukujono[indeksi]:
+        for i in range(0, self.alkioiden_maara):
+            if luku == self.lukujono[i]:
                 osumat += 1
 
         return osumat > 0
@@ -49,81 +49,81 @@ class IntJoukko:
         return False
 
     def poista(self, luku):
-        kohta = -1
-        apu = 0
+        poistettava_indeksi = -1
+        apumuuttuja = 0
 
-        for indeksi in range(0, self.alkioiden_maara):
-            if luku == self.lukujono[indeksi]:
-                kohta = indeksi  # siis luku löytyy tuosta kohdasta :D
-                self.lukujono[kohta] = 0
+        for i in range(0, self.alkioiden_maara):
+            if luku == self.lukujono[i]:
+                poistettava_indeksi = i  # siis luku löytyy tuosta kohdasta :D
+                self.lukujono[poistettava_indeksi] = 0
                 break
 
-        if kohta != -1:
-            for j in range(kohta, self.alkioiden_maara - 1):
-                apu = self.lukujono[j]
+        if poistettava_indeksi != -1:
+            for j in range(poistettava_indeksi, self.alkioiden_maara - 1):
+                apumuuttuja = self.lukujono[j]
                 self.lukujono[j] = self.lukujono[j + 1]
-                self.lukujono[j + 1] = apu
+                self.lukujono[j + 1] = apumuuttuja
 
             self.alkioiden_maara = self.alkioiden_maara - 1
             return True
 
         return False
 
-    def kopioi_lista(self, a, b):
-        for i in range(0, len(a)):
-            b[i] = a[i]
+    def kopioi_lista(self, lahde, kohde):
+        for i in range(0, len(lahde)):
+            kohde[i] = lahde[i]
 
     def mahtavuus(self):
         return self.alkioiden_maara
 
     def to_int_list(self):
-        taulu = self._luo_lista(self.alkioiden_maara)
+        lista = self._luo_lista(self.alkioiden_maara)
 
-        for i in range(0, len(taulu)):
-            taulu[i] = self.lukujono[i]
+        for i in range(0, len(lista)):
+            lista[i] = self.lukujono[i]
 
-        return taulu
-
-    @staticmethod
-    def yhdiste(a, b):
-        x = IntJoukko()
-        a_taulu = a.to_int_list()
-        b_taulu = b.to_int_list()
-
-        for i in range(0, len(a_taulu)):
-            x.lisaa(a_taulu[i])
-
-        for i in range(0, len(b_taulu)):
-            x.lisaa(b_taulu[i])
-
-        return x
+        return lista
 
     @staticmethod
-    def leikkaus(a, b):
-        y = IntJoukko()
-        a_taulu = a.to_int_list()
-        b_taulu = b.to_int_list()
+    def yhdiste(joukko_a, joukko_b):
+        joukko = IntJoukko()
+        lista_a = joukko_a.to_int_list()
+        lista_b = joukko_b.to_int_list()
 
-        for i in range(0, len(a_taulu)):
-            for j in range(0, len(b_taulu)):
-                if a_taulu[i] == b_taulu[j]:
-                    y.lisaa(b_taulu[j])
+        for i in range(0, len(lista_a)):
+            joukko.lisaa(lista_a[i])
 
-        return y
+        for i in range(0, len(lista_b)):
+            joukko.lisaa(lista_b[i])
+
+        return joukko
 
     @staticmethod
-    def erotus(a, b):
-        z = IntJoukko()
-        a_taulu = a.to_int_list()
-        b_taulu = b.to_int_list()
+    def leikkaus(joukko_a, joukko_b):
+        joukko = IntJoukko()
+        lista_a = joukko_a.to_int_list()
+        lista_b = joukko_b.to_int_list()
 
-        for i in range(0, len(a_taulu)):
-            z.lisaa(a_taulu[i])
+        for i in range(0, len(lista_a)):
+            for j in range(0, len(lista_b)):
+                if lista_a[i] == lista_b[j]:
+                    joukko.lisaa(lista_b[j])
 
-        for i in range(0, len(b_taulu)):
-            z.poista(b_taulu[i])
+        return joukko
 
-        return z
+    @staticmethod
+    def erotus(joukko_a, joukko_b):
+        joukko = IntJoukko()
+        lista_a = joukko_a.to_int_list()
+        lista_b = joukko_b.to_int_list()
+
+        for i in range(0, len(lista_a)):
+            joukko.lisaa(lista_a[i])
+
+        for i in range(0, len(lista_b)):
+            joukko.poista(lista_b[i])
+
+        return joukko
 
     def __str__(self):
         if self.alkioiden_maara == 0:
@@ -131,10 +131,10 @@ class IntJoukko:
         elif self.alkioiden_maara == 1:
             return "{" + str(self.lukujono[0]) + "}"
         else:
-            tuotos = "{"
+            esitys = "{"
             for i in range(0, self.alkioiden_maara - 1):
-                tuotos = tuotos + str(self.lukujono[i])
-                tuotos = tuotos + ", "
-            tuotos = tuotos + str(self.lukujono[self.alkioiden_maara - 1])
-            tuotos = tuotos + "}"
-            return tuotos
+                esitys = esitys + str(self.lukujono[i])
+                esitys = esitys + ", "
+            esitys = esitys + str(self.lukujono[self.alkioiden_maara - 1])
+            esitys = esitys + "}"
+            return esitys
