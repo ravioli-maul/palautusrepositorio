@@ -85,7 +85,7 @@ class IntJoukko:
     def __str__(self):
         if self.alkioiden_maara == 0:
             return "{}"
-        elif self.alkioiden_maara == 1:
+        if self.alkioiden_maara == 1:
             return "{" + str(self.lukujono[0]) + "}"
 
         esitys = "{"
