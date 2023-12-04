@@ -56,30 +56,22 @@ class IntJoukko:
 
     @staticmethod
     def yhdiste(joukko_a, joukko_b):
-        joukko = IntJoukko()
-        lista_a = joukko_a.to_int_list()
-        lista_b = joukko_b.to_int_list()
-
-        for i in range(0, len(lista_a)):
-            joukko.lisaa(lista_a[i])
-
-        for i in range(0, len(lista_b)):
-            joukko.lisaa(lista_b[i])
-
-        return joukko
+        yhdiste_joukko = IntJoukko()
+        for luku in joukko_a.to_int_list():
+            yhdiste_joukko.lisaa(luku)
+        for luku in joukko_b.to_int_list():
+            yhdiste_joukko.lisaa(luku)
+        return yhdiste_joukko
 
     @staticmethod
     def leikkaus(joukko_a, joukko_b):
-        joukko = IntJoukko()
-        lista_a = joukko_a.to_int_list()
-        lista_b = joukko_b.to_int_list()
-
-        for i in range(0, len(lista_a)):
-            for j in range(0, len(lista_b)):
-                if lista_a[i] == lista_b[j]:
-                    joukko.lisaa(lista_b[j])
-
-        return joukko
+        leikkaus_joukko = IntJoukko()
+        a_lista = joukko_a.to_int_list()
+        b_lista = joukko_b.to_int_list()
+        for luku in a_lista:
+            if luku in b_lista:
+                leikkaus_joukko.lisaa(luku)
+        return leikkaus_joukko
 
     @staticmethod
     def erotus(joukko_a, joukko_b):
