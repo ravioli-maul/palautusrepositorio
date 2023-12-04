@@ -29,21 +29,12 @@ class IntJoukko:
         return osumat > 0
 
     def lisaa(self, luku):
-        if self.alkioiden_maara == 0:
-            self.lukujono[0] = luku
-            self.alkioiden_maara += 1
-            return True
-
         if not self.kuuluu(luku):
+            if self.alkioiden_maara == len(self.lukujono):
+                self.lukujono = self.lukujono + self._luo_lista(self.kasvatuskoko)
+
             self.lukujono[self.alkioiden_maara] = luku
             self.alkioiden_maara += 1
-
-            if self.alkioiden_maara % len(self.lukujono) == 0:
-                taysi_lukujono = self.lukujono
-                self.kopioi_lista(self.lukujono, taysi_lukujono)
-                self.lukujono = self._luo_lista(self.alkioiden_maara + self.kasvatuskoko)
-                self.kopioi_lista(taysi_lukujono, self.lukujono)
-
             return True
 
         return False
