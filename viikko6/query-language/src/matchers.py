@@ -53,3 +53,27 @@ class Not:
 
     def test(self, player):
         return not self._matcher.test(player)
+
+class QueryBuilder:
+    def __init__(self):
+        self._matchers = []
+
+    def playsIn(self, team):
+        self._matchers.append(PlaysIn(team))
+        return self
+
+    def HasAtLeast(self, value, attr):
+        self._matchers.append(HasAtLeast(value, attr))
+        return self
+
+    def HasFewerThan(self, value, attr):
+        self._matchers.append(HasFewerThan(value, attr))
+        return self
+
+    def build(self):
+        if not self._matchers:
+            return All()
+        elif len(self._matchers) == 1:
+            return self._matchers[0]
+        else:
+            return And(*self._matchers)
