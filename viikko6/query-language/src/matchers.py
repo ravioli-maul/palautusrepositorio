@@ -57,17 +57,26 @@ class Not:
 class QueryBuilder:
     def __init__(self):
         self._matchers = []
+        self._or_ = False
 
     def playsIn(self, team):
         self._matchers.append(PlaysIn(team))
         return self
 
-    def HasAtLeast(self, value, attr):
+    def hasAtLeast(self, value, attr):
         self._matchers.append(HasAtLeast(value, attr))
         return self
 
-    def HasFewerThan(self, value, attr):
+    def hasFewerThan(self, value, attr):
         self._matchers.append(HasFewerThan(value, attr))
+        return self
+
+    def or_(self):
+        self._or_ = True
+        return self
+
+    def oneOf(self, *matchers):
+        self._matchers.append(Or(*matchers))
         return self
 
     def build(self):
@@ -76,4 +85,6 @@ class QueryBuilder:
         elif len(self._matchers) == 1:
             return self._matchers[0]
         else:
+            if self._or_:
+                return Or(*self._matchers)
             return And(*self._matchers)
