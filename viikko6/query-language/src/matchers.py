@@ -9,6 +9,15 @@ class And:
 
         return True
 
+class Or:
+    def __init__(self, *matchers):
+        self._matchers = matchers
+
+    def test(self, player):
+        for matcher in self._matchers:
+            if matcher.test(player):
+                return True
+        return False
 
 class PlaysIn:
     def __init__(self, team):
@@ -16,7 +25,6 @@ class PlaysIn:
 
     def test(self, player):
         return player.team == self._team
-
 
 class HasAtLeast:
     def __init__(self, value, attr):
@@ -35,7 +43,6 @@ class HasFewerThan:
     def test(self, player):
         return not self._has_at_least.test(player)
 
-
 class All:
     def test(self, player):
         return True
@@ -46,4 +53,3 @@ class Not:
 
     def test(self, player):
         return not self._matcher.test(player)
-
